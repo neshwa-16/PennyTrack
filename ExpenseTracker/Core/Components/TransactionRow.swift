@@ -26,17 +26,20 @@ struct TransactionRow: View {
             VStack(alignment: .leading, spacing: 7.0) {
                 HStack {
                     Text(item.categoryName)
+                        .font(.system(size: 15.0))
                 }
-                .font(.system(size: 18.0))
+                
                 .foregroundStyle(.black)
                 
                 Text(item.date)
+                    .font(.system(size: 14.0))
                     .foregroundStyle(.gray)
             }
             
             Spacer()
             
             Text(item.amount)
+                .font(.system(size: 16.0))
         }
         .background(.white)
         .padding(5.0)
@@ -63,17 +66,19 @@ struct TransactionItemRow: View {
                 VStack(alignment: .leading, spacing: 7.0) {
                     HStack {
                         Text(item.categoryName)
+                            .font(.system(size: 15.0))
                     }
-                    .font(.system(size: 18.0))
                     .foregroundStyle(.black)
                     
                     Text(item.date)
+                        .font(.system(size: 14.0))
                         .foregroundStyle(.gray)
                 }
                 
                 Spacer()
                 
                 Text(item.amount)
+                    .font(.system(size: 16.0))
             }
             .background(.white)
             .padding(.vertical, 15.0)

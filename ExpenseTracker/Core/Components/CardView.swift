@@ -25,14 +25,14 @@ struct CardView: View {
                 )
                 .frame(height: 100.0)
             
-            VStack(alignment: .leading, spacing: 15) {
+            VStack(alignment: .leading, spacing: 12) {
                 
                 Text(item.cardTitle)
-                    .font(.system(size: 15.0))
+                    .font(.system(size: 14.0))
                     .foregroundStyle(Color(item.titleColor))
                     
                 Text(item.cardAmount)
-                    .font(.system(size: 20.0))
+                    .font(.system(size: 18.0))
             }
             .padding(15.0)
         }

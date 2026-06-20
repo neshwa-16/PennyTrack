@@ -23,8 +23,11 @@ struct BudgetRow: View {
                 
                 VStack(alignment: .leading) {
                     Text(item.categoryName)
+                        .font(.system(size: 14.0))
+                    
                     
                     Text(item.amount)
+                        .font(.system(size: 16.0))
                         .foregroundStyle(.gray)
                 }
                 

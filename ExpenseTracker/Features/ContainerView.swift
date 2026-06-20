@@ -19,19 +19,19 @@ struct ContainerView: View {
                 }
             
             Tab("Transactions", systemImage: "dollarsign.square", value: 1) {
-                TransactionsView()
+                    TransactionsView()
                 }
             
             Tab("Budget", systemImage: "chart.pie", value: 2) {
-                BudgetView()
+                    BudgetView()
                 }
             
             Tab("Analytics", systemImage: "chart.bar.xaxis", value: 3) {
-                    HomeView()
+                    AnalyticsView()
                 }
             
             Tab("Settings", systemImage: "gearshape", value: 4) {
-                    HomeView()
+                    SettingsView()
                 }
         }
         .tint(.purple)
