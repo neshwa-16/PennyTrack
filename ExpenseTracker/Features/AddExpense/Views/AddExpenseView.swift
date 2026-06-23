@@ -6,34 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddExpenseView: View {
     
-    @State private var amount: String = ""
     @State private var notes = ""
     
-    let categories : [CategoryModel] = [
-        CategoryModel(
-            categoryName: "Shopping",
-            iconName: "cart",
-            iconTheme: "purple"),
-        CategoryModel(
-            categoryName: "Food",
-            iconName: "fork.knife",
-            iconTheme: "orange"),
-        CategoryModel(
-            categoryName: "Transport",
-            iconName: "car.side",
-            iconTheme: "blue"),
-        CategoryModel(
-            categoryName: "Bills",
-            iconName: "house",
-            iconTheme: "green"),
-        CategoryModel(
-            categoryName: "Other",
-            iconName: "bolt",
-            iconTheme: "pink"),
-    ]
+    @StateObject private var viewModel = AddExpenseViewModel()
+    
+    @State private var selectedDate = Date()
+    @State private var showDatePicker = false
+    
+    @Environment(\.modelContext) private var context
     
     var body: some View {
         
@@ -50,8 +34,12 @@ struct AddExpenseView: View {
                             .foregroundStyle(.black)
                             .padding(.leading, 15.0)
                         
-                        TextField("0.00", text: $amount)
+                        TextField("0.00", text: $viewModel.amount)
                             .padding(.trailing, 15.0)
+                            .keyboardType(.decimalPad)
+                            .onChange(of: viewModel.amount) { _, newValue in
+                                viewModel.amount = AmountValidator.sanitize(newValue)
+                            }
                     }
                     .font(.system(size: 28.0))
                     .frame(maxWidth: .infinity)
@@ -67,23 +55,8 @@ struct AddExpenseView: View {
                         .foregroundStyle(.gray)
                     
                     //MARK: Categories
-                    HStack (alignment: .top){
-                        ForEach(categories, id: \.categoryName) { category in
-                            VStack(spacing: 8.0) {
-                                Image(systemName: category.iconName)
-                                    .font(.system(size: 24.0))
-                                .foregroundStyle(Color(category.iconTheme))
-                                    .frame(width: 56.0, height: 56.0)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 18)
-                                            .fill(Color(category.iconTheme).opacity(0.1))
-                                    )
-                                    .frame(maxWidth: .infinity)
-                                
-                                Text(category.categoryName)
-                                    .font(.system(size: 12.0, weight: .medium))
-                            }
-                        }
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        CategoryButtons(selectedCategory: $viewModel.selectedCategory)
                     }
                     
                     Spacer()
@@ -95,14 +68,16 @@ struct AddExpenseView: View {
                     
                     //MARK: Date Picker
                     HStack {
-                        Text("Today")
+                        Text(selectedDate.formatted(date: .abbreviated, time: .omitted))
                             .font(.system(size: 23.0, weight: .medium))
                             .padding(.leading, 15.0)
                         
                         Spacer()
                         
                         Button {
-                            
+                            withAnimation {
+                                showDatePicker.toggle()
+                            }
                         } label: {
                             Image(systemName: "calendar")
                                 .resizable()
@@ -117,6 +92,37 @@ struct AddExpenseView: View {
                         RoundedRectangle(cornerRadius: 18)
                             .fill(.gray.opacity(0.1))
                     )
+                    /* .sheet(isPresented: $showDatePicker) {
+                        NavigationStack {
+                            DatePicker(
+                                "Select Date",
+                                selection: $selectedDate,
+                                displayedComponents: .date
+                            )
+                            .datePickerStyle(.graphical)
+                            .padding()
+                            .navigationTitle("Choose Date")
+                            .toolbar {
+                                ToolbarItem(placement: .topBarTrailing) {
+                                    Button("Done") {
+                                        showDatePicker = false
+                                    }
+                                }
+                            }
+                        }
+                    } */
+                    
+                    if showDatePicker {
+                        DatePicker(
+                            "",
+                            selection: $selectedDate,
+                            in: ...Date(),
+                            displayedComponents: .date
+                        )
+                        .datePickerStyle(.graphical)
+                        .labelsHidden()
+                        .transition(.move(edge: .top).combined(with: .opacity))
+                    }
                     
                     Spacer()
                         .frame(height: 5.0)
@@ -189,13 +195,15 @@ struct AddExpenseView: View {
                 .background(.gray.opacity(0.5))
             
             Button {
+                print("date is \(selectedDate)")
+               viewModel.save(context: context)
                 
             } label: {
                 Text("Save Expense")
                     .font(.system(size: 18, weight: .bold))
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 65)
+                    .frame(height: 55)
                     .background(
                         RoundedRectangle(cornerRadius: 18)
                             .fill(
@@ -207,6 +215,14 @@ struct AddExpenseView: View {
                     )
             }
             .padding(20)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .alert(item: $viewModel.alertItem) { item in
+            Alert(
+                title: Text(item.title),
+                message: Text(item.message),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 struct TransactionItem {
+    let id = UUID()
     let iconTheme: String
     let iconName: String
     let categoryName: String

@@ -8,6 +8,16 @@
 import SwiftUI
 import Charts
 
+struct ExpenseMonth: Identifiable, Equatable {
+
+    let id = UUID()
+
+    let month: String
+
+    let amount: Double
+
+}
+
 struct BarChartView: View {
 
     let data = [

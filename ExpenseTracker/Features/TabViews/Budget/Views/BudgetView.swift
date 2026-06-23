@@ -152,7 +152,7 @@ struct BudgetView: View {
             .padding()
             
             VStack(spacing: 20) {
-                ForEach(budgets, id: \.categoryName) { budget in
+                ForEach(budgets, id: \.id) { budget in
                     BudgetRow(item: budget)
                 }
             }

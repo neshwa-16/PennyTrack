@@ -92,18 +92,20 @@ struct OnboardingHomeView: View {
                 //PageIndicator(pageCount: 3, currentPage: $currentPage)
                 
                 HStack(spacing: 10) {
-                    Capsule()
-                        .fill(page.gradientColors[0])
-                        .frame(width: 50, height: 10)
-                    
-                    Circle()
-                        .fill(page.gradientColors[0].opacity(0.3))
-                        .frame(width: 12, height: 12)
-                    
-                    Circle()
-                        .fill(page.gradientColors[0].opacity(0.3))
-                        .frame(width: 12, height: 12)
+                    ForEach(0..<pageCount, id: \.self) { index in
+
+                        if index == currentPage {
+                            Capsule()
+                                .fill(page.gradientColors[0])
+                                .frame(width: 50, height: 10)
+                        } else {
+                            Circle()
+                                .fill(page.gradientColors[0].opacity(0.3))
+                                .frame(width: 12, height: 12)
+                        }
+                    }
                 }
+                .animation(.easeInOut, value: currentPage)
                 
                 Spacer()
                     .frame(height: 40)
@@ -146,7 +148,3 @@ struct OnboardingHomeView: View {
     
 }
 
-
-//#Preview {
-//    OnboardingHomeView(page: <#OnboardingPage#>).environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
-//}

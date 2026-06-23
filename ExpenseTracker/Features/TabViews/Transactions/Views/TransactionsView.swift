@@ -160,7 +160,7 @@ struct TransactionsView: View {
             
             ScrollView {
                 VStack(spacing: 20.0) {
-                    ForEach(filteredTransactions, id: \.categoryName) { item in
+                    ForEach(filteredTransactions, id: \.id) { item in
                         TransactionItemRow(item: item)
                     }
                 }
@@ -176,3 +176,5 @@ struct TransactionsView: View {
 #Preview {
     TransactionsView()
 }
+
+

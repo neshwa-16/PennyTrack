@@ -8,6 +8,7 @@
 import Foundation
 
 struct CategoryModel {
+    let id = UUID()
     let categoryName: String
     let iconName: String
     let iconTheme: String

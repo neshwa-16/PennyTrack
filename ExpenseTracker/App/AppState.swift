@@ -6,10 +6,20 @@
 //
 
 import Combine
+import Foundation
 
 final class AppState: ObservableObject {
 
     @Published var hasCompletedOnboarding = false
     @Published var isLoggedIn = false
-    @Published var isPremium = false
+    
+    let entitlementManager: EntitlementManager
+        @Published var purchaseManager: PurchaseManager
+
+        init() {
+            entitlementManager = EntitlementManager()
+            purchaseManager = PurchaseManager(
+                entitlementManager: entitlementManager
+            )
+        }
 }

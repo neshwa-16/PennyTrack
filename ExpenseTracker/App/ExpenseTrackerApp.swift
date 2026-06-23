@@ -6,16 +6,34 @@
 //
 
 import SwiftUI
+import SwiftData
 import CoreData
 
 @main
 struct ExpenseTrackerApp: App {
-    let persistenceController = PersistenceController.shared
+
+    @StateObject private var appState = AppState()
+    
+    init() {
+        if let url = FileManager.default.urls(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask
+        ).first {
+            print("Application Support:", url.path)
+        }
+    }
 
     var body: some Scene {
+
         WindowGroup {
+
             RootView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(appState)
         }
+        .modelContainer(for: [
+            Expense.self,
+            Category.self,
+            PaymentMethod.self
+        ])
     }
 }

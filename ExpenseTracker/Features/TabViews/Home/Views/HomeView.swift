@@ -165,7 +165,7 @@ struct HomeView: View {
                         
                         //MARK: List by category
                         VStack {
-                            ForEach(categories, id: \.categoryName) { item in
+                            ForEach(categories, id: \.id) { item in
                                 CategoryRow(item: item)
                             }
                         }
@@ -191,7 +191,7 @@ struct HomeView: View {
                         
                         //MARK: Recent transactions
                         VStack {
-                            ForEach(transactions,  id: \.categoryName) { item in
+                            ForEach(transactions,  id: \.id) { item in
                                 TransactionRow(item: item)
                             }
                         }
@@ -217,6 +217,7 @@ struct HomeView: View {
                 } label: {
                     Image(systemName: "plus")
                         .font(.title2)
+                        .fontWeight(.bold)
                         .foregroundStyle(.white)
                         .frame(width: 65.0, height: 65.0)
                         .background(
